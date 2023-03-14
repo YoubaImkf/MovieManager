@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ToastAndroid } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import MoviesListScreen from './MoviesListScreen';
@@ -11,8 +11,12 @@ const RegistrationScreen = ({ navigation }) => {
   const [note, setNote] = useState('');
 
   const generateNotes = () => {
-    return Array.from({length: 21}, (_, i) => i);
-  }
+    const notes = [];
+    for (let i = 0; i <= 20; i++) {
+      notes.push(i);
+    }
+    return notes;
+  };
   
   const addMovie = async () => {
     const movie = { name, author, date, note };
@@ -20,8 +24,10 @@ const RegistrationScreen = ({ navigation }) => {
       const savedMovies = await AsyncStorage.getItem('movies');
       const movies = savedMovies ? JSON.parse(savedMovies) : [];
       movies.push(movie);
-      await AsyncStorage.setItem('movies', JSON.stringify(movies));
+      await AsyncStorage.setItem('movies', movies);
       navigation.navigate('MoviesList'); // Navigate to MoviesListScreen
+
+      ToastAndroid.show('Movie '+ movie.name +' added successfully', ToastAndroid.SHORT);
     } catch (error) {
       console.log('Error adding movie: ', error);
     }

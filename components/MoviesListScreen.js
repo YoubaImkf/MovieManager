@@ -61,7 +61,7 @@ const MoviesListScreen = ({ navigation }) => {
     try {
       const newMovies = [...movies]; // the three dots ('...'), to create a new array containing all the elements of the 'movies' array
       newMovies.splice(index, 1);
-      await AsyncStorage.setItem('movies', JSON.stringify(newMovies));
+      await AsyncStorage.setItem('movies', newMovies);
       setMovies(newMovies);
     } catch (error) {
       console.log('Error deleting movie: ', error);
@@ -69,7 +69,7 @@ const MoviesListScreen = ({ navigation }) => {
   };
 
   const renderItem = ({ item, index }) => (
-    <TouchableOpacity style={styles.listItem}>
+    <View style={styles.listItem}>
       <View style={styles.textContainer}>
         <Text style={styles.name}>{`Name: ${item.name}`}</Text>
         <Text style={styles.author}>{`Author: ${item.author}`}</Text>
@@ -79,7 +79,7 @@ const MoviesListScreen = ({ navigation }) => {
       <TouchableOpacity style={styles.deleteButton} onPress={() => confirmDeleteMovie(index)}>
         <Icon name="remove-circle-outline" size={24} color="red" />
       </TouchableOpacity>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
